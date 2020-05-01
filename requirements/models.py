@@ -58,6 +58,7 @@ class Unit(models.Model):
     name = models.CharField(max_length=140, unique=True)
     name_plural = models.CharField(max_length=140, unique=True)
     description = models.TextField(blank=True, null=True)
+    is_active = models.BooleanField(default=True)
 
     class Meta:
         app_label = 'requirements'
