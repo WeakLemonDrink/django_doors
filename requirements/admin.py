@@ -4,9 +4,21 @@ Defines admin display for the `requirements` app
 
 from django.contrib import admin
 
-from requirements.models import Unit
+from reversion.admin import VersionAdmin
+
+from requirements import models
 
 
+@admin.register(models.Component)
+class ComponentAdmin(VersionAdmin):
+    '''
+    Defines admin display for the `component` model
+
+    Implements `django-reversion` functionality
+    '''
+
+
+@admin.register(models.Unit)
 class UnitAdmin(admin.ModelAdmin):
     '''
     Defines admin display for the `unit` model
@@ -15,4 +27,10 @@ class UnitAdmin(admin.ModelAdmin):
     list_display = ('symbol', 'name', 'description', 'is_active')
 
 
-admin.site.register(Unit, UnitAdmin)
+@admin.register(models.Term)
+class TermAdmin(VersionAdmin):
+    '''
+    Defines admin display for the `Term` model
+
+    Implements `django-reversion` functionality
+    '''

@@ -6,6 +6,8 @@ Definition of database models for the `requirements` app
 from django.contrib.auth.models import User
 from django.db import models
 
+import reversion
+
 
 class CoreModel(models.Model):
     '''
@@ -28,6 +30,7 @@ class CoreModel(models.Model):
         abstract = True
 
 
+@reversion.register()
 class Component(CoreModel):
     '''
     Defines database table structure for `Component` entries
@@ -68,6 +71,7 @@ class Unit(models.Model):
         return self.symbol
 
 
+@reversion.register()
 class Term(CoreModel):
     '''
     Defines database table structure for `Term` entries
@@ -124,10 +128,27 @@ class Term(CoreModel):
         app_label = 'requirements'
         ordering = ['name']
 
+    def save(self, *args, **kwargs): # pylint: disable=signature-differs
+        '''
+        Override superclass save to:
+         * make `boolean_false_cond` field string upper if filled
+         * make `boolean_true_cond` field string upper if filled
+        '''
+
+        if self.boolean_false_cond:
+            self.boolean_false_cond = self.boolean_false_cond.upper()
+
+        if self.boolean_true_cond:
+            self.boolean_true_cond = self.boolean_true_cond.upper()
+
+        # Call superclass save
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return '"{}"'.format(self.name)
 
 
+@reversion.register()
 class SysReq(CoreModel):
     '''
     Defines database table structure for `SysReq` entries
@@ -146,6 +167,7 @@ class SysReq(CoreModel):
         verbose_name_plural = 'System Requirements'
 
 
+@reversion.register()
 class HighLevelReq(CoreModel):
     '''
     Defines database table structure for `HighLevelReq` entries
@@ -166,6 +188,7 @@ class HighLevelReq(CoreModel):
         verbose_name_plural = 'High-level Requirements'
 
 
+@reversion.register()
 class LowLevelReq(CoreModel):
     '''
     Defines database table structure for `LowLevelReq` entries
