@@ -6,7 +6,7 @@ from django.contrib import admin
 
 from reversion.admin import VersionAdmin
 
-from requirements import models
+from requirements import forms, models
 
 
 @admin.register(models.Component)
@@ -34,3 +34,5 @@ class TermAdmin(VersionAdmin):
 
     Implements `django-reversion` functionality
     '''
+
+    form = forms.TermForm

@@ -25,8 +25,7 @@ class UnitTests(TestCase):
         '''
 
         entry_data = json.loads(
-            '{"name": "micro-amp", "name_plural": "micro-amps", "symbol": "µA", ' /
-            '"description": "electric current"}'
+            '{"name": "micro-amp", "name_plural": "micro-amps", "symbol": "µA", "description": "electric current"}' # pylint: disable=line-too-long
         )
 
         entry = models.Unit.objects.create(**entry_data)

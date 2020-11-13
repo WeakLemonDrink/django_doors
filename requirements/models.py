@@ -116,11 +116,13 @@ class Term(CoreModel):
     name = models.CharField(max_length=140, unique=True)
     t_type = models.IntegerField('Term Type', choices=T_TYPE_CHOICES,
                                  default=DEFINITION)
-    boolean_false_cond = models.CharField(max_length=140, blank=True, null=True)
-    boolean_true_cond = models.CharField(max_length=140, blank=True, null=True)
+    boolean_false_cond = models.CharField('Boolean True Condition', max_length=140, blank=True,
+                                          null=True)
+    boolean_true_cond = models.CharField('Boolean False Condition', max_length=140, blank=True,
+                                         null=True)
     description = models.TextField(blank=True, null=True)
-    max_value = models.CharField(max_length=140, blank=True, null=True)
-    min_value = models.CharField(max_length=140, blank=True, null=True)
+    max_value = models.CharField('Maximum Value', max_length=140, blank=True, null=True)
+    min_value = models.CharField('Minimum Value', max_length=140, blank=True, null=True)
     units = models.ForeignKey(Unit, blank=True, null=True, on_delete=models.CASCADE)
     value = models.CharField(max_length=140, blank=True, null=True)
 
