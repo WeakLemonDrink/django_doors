@@ -144,7 +144,7 @@ class TermFormTests(TestCase):
         `TermForm` should raise errors for invalid data combinations
 
         If data type is BOOLEAN, both `boolean_true_cond` and `boolean_false_cond` should be
-        filled. If `boolean_false_cond` is not filled, data is not valid
+        filled. If `boolean_false_cond` is not filled, clean method should raise error
         '''
 
         post_data = {
@@ -180,7 +180,7 @@ class TermFormTests(TestCase):
         `TermForm` should raise errors for invalid data combinations
 
         If data type is BOOLEAN, both `boolean_true_cond` and `boolean_false_cond` should be
-        filled. If `boolean_true_cond` is not filled, data is not valid
+        filled. If `boolean_true_cond` is not filled, clean method should raise error
         '''
 
         post_data = {
@@ -192,3 +192,57 @@ class TermFormTests(TestCase):
 
         # Should return error attached to `boolean_true_cond` field
         self.assertEqual(form.errors['boolean_true_cond'], ['This field should be filled.'])
+
+    def test_t_type_constant_value_filled_is_valid_true(self):
+        '''
+        `TermForm` should return `is_valid` == `True` for valid data combinations
+
+        If data type is CONSTANT, `value` should be filled. If this condition is met, data is
+        valid
+        '''
+
+        post_data = {
+            'd_type': models.Term.INTEGER, 't_type': models.Term.CONSTANT, 'name': 'my var',
+            'value': 12
+        }
+
+        form = forms.TermForm(post_data, current_user=self.user)
+
+        # Should return true as supplied with valid data
+        self.assertTrue(form.is_valid())
+
+    def test_t_type_constant_value_blank_is_valid_false(self):
+        '''
+        `TermForm` should raise errors for invalid data combinations
+
+        If term type is CONSTANT, `value` should be filled. If `value` is not filled, data is not
+        valid
+        '''
+
+        post_data = {
+            'd_type': models.Term.INTEGER, 't_type': models.Term.CONSTANT, 'name': 'my var',
+            'value': None
+        }
+
+        form = forms.TermForm(post_data, current_user=self.user)
+
+        # Should return false as supplied with invalid data
+        self.assertFalse(form.is_valid())
+
+    def test_t_type_constant_value_blank_raises_error(self):
+        '''
+        `TermForm` should raise errors for invalid data combinations
+
+        If term type is CONSTANT, `value` should be filled. If `value` is not filled, clean method
+        should raise error
+        '''
+
+        post_data = {
+            'd_type': models.Term.INTEGER, 't_type': models.Term.CONSTANT, 'name': 'my var',
+            'value': None
+        }
+
+        form = forms.TermForm(post_data, current_user=self.user)
+
+        # Should return error attached to `value` field
+        self.assertEqual(form.errors['value'], ['This field should be filled.'])

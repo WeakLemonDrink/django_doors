@@ -120,10 +120,12 @@ class Term(CoreModel):
                                           null=True)
     boolean_true_cond = models.CharField('Boolean False Condition', max_length=140, blank=True,
                                          null=True)
+    enumerators = models.JsonField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     max_value = models.CharField('Maximum Value', max_length=140, blank=True, null=True)
     min_value = models.CharField('Minimum Value', max_length=140, blank=True, null=True)
     units = models.ForeignKey(Unit, blank=True, null=True, on_delete=models.CASCADE)
+    initial_value = models.CharField(max_length=140, blank=True, null=True)
     value = models.CharField(max_length=140, blank=True, null=True)
 
     class Meta:
@@ -161,7 +163,6 @@ class SysReq(CoreModel):
 
     component = models.ForeignKey(Component, on_delete=models.CASCADE)
     req_statement = models.TextField('Requirement Statement')
-    removed = models.BooleanField(default=False)
 
     class Meta:
         app_label = 'requirements'
@@ -179,7 +180,6 @@ class HighLevelReq(CoreModel):
     '''
 
     derived_req = models.BooleanField(default=False)
-    removed = models.BooleanField(default=False)
     req_statement = models.TextField('Requirement Statement')
     sys_req = models.ManyToManyField(SysReq, verbose_name='System Requirement')
     term = models.ManyToManyField(Term, verbose_name='Terms')
@@ -203,7 +203,6 @@ class LowLevelReq(CoreModel):
     high_level_req = models.ManyToManyField(
         HighLevelReq, verbose_name='High-level Requirement'
     )
-    removed = models.BooleanField(default=False)
     req_statement = models.TextField('Requirement Statement')
     term = models.ManyToManyField(Term, verbose_name='Terms')
 

@@ -35,6 +35,7 @@ class TermForm(forms.ModelForm):
          * Add `added_user` and `modified_user`
          * If `d_type` is `BOOLEAN`, both `boolean_false_cond` and `boolean_true_cond` should be
            filled
+         * If `t_type` is `CONSTANT`, `value` should be filled
         '''
 
         cleaned_data = super().clean()
@@ -49,5 +50,9 @@ class TermForm(forms.ModelForm):
 
             if not cleaned_data['boolean_true_cond']:
                 self.add_error('boolean_true_cond', 'This field should be filled.')
+
+        if cleaned_data['t_type'] == models.Term.CONSTANT:
+            if not cleaned_data['value']:
+                self.add_error('value', 'This field should be filled.')
 
         return cleaned_data
